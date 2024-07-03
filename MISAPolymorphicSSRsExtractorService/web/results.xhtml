@@ -1,0 +1,182 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Results</title>
+    </h:head>
+    <h:body>
+        
+        <p:fieldset legend="Imput" toggleable="true" toggleSpeed="500">
+            <p class="m-0">
+                <br>File: #{PipelineManagedBean.filename}</br>
+                <br>Definition(unit size,min repeats): mononucleotide: #{PipelineManagedBean.min_mono} dinucleotide: #{PipelineManagedBean.min_di} trinucleotide: #{PipelineManagedBean.min_three} tetranucleotide: #{PipelineManagedBean.min_tetra} pentanucleotide: #{PipelineManagedBean.min_pent} hexanucleotide: #{PipelineManagedBean.min_hexa}</br>
+                <br>Organism: #{PipelineManagedBean.organism}</br>
+                <br>Max Target Sequences: #{PipelineManagedBean.maxTargetSequences}</br>
+                <br>Expect Threshold: #{PipelineManagedBean.expectThreshold}</br>
+                <br>Identity percent: #{PipelineManagedBean.identityPercent} %</br>
+                <br>Coverage percent: #{PipelineManagedBean.coveragePercent} %</br>
+            </p>
+        </p:fieldset> 
+        
+        <p:accordionPanel multiple="true">
+            <p:tab title="Generic results">
+                <h:form>
+                    <h:commandLink title="Download">
+                        <p:graphicImage url="./../resources/images/ExcelLogo.png"/>
+                        <p:dataExporter type="xls" target="genericResults" 
+                                        fileName="#{PipelineManagedBean.filename}_generic_result_#{PipelineManagedBean.identityPercent}_#{PipelineManagedBean.coveragePercent}"/>
+                    </h:commandLink>
+                    <p:dataTable id="genericResults" value="#{PipelineManagedBean.genericResults}" var="gr" style="font-size: xx-small" resizableColumns="true" scrollable="true" scrollHeight="400">
+                        
+                        <p:column headerText="QryAccVer" filterBy="#{gr.query_acc_ver}" filterMatchMode="contains">
+                            
+                            <p:outputLabel value="#{gr.query_acc_ver}"/>
+                        </p:column>
+                        
+                        <p:column headerText="QryStart" filterBy="#{gr.locat_l}" filterMatchMode="contains">
+                            
+                            <p:outputLabel value="#{gr.locat_l}"/>
+                        </p:column>
+                        
+                        <p:column headerText="QryEnd" filterBy="#{gr.locat_r}" filterMatchMode="contains">
+                            
+                            <p:outputLabel value="#{gr.locat_r}"/>
+                        </p:column>
+                        
+                        <p:column headerText="Pattern" filterBy="#{gr.pattern}" filterMatchMode="contains">
+                            
+                            <p:outputLabel value="#{gr.pattern}"/>
+                        </p:column>
+           
+                        <p:column headerText="PattLen" filterBy="#{gr.pattern_length}" filterMatchMode="contains">
+                            
+                            <p:outputLabel value="#{gr.pattern_length}"/>
+                        </p:column>
+                        
+                        <p:column headerText="Reps" filterBy="#{gr.number_of_Runits}" filterMatchMode="contains">
+                            
+                            <p:outputLabel value="#{gr.number_of_Runits}"/>
+                        </p:column>
+                        
+                        <p:column headerText="LeftFlank(LF)" filterBy="#{gr.f5}" filterMatchMode="contains">
+                            
+                            <p:outputLabel value="#{gr.f5}"/>
+                        </p:column>
+                        
+                        <p:column headerText="LF Entropy" filterBy="#{gr.entropy_5}" filterMatchMode="contains">
+                            
+                            <p:outputLabel value="#{gr.entropy_5}"/>
+                        </p:column>
+                        
+                        <p:column headerText="RightFlank(RF)" filterBy="#{gr.f3}" filterMatchMode="contains">
+                            
+                            <p:outputLabel value="#{gr.f3}"/>
+                        </p:column>
+                        
+                        <p:column headerText="RF Entropy" filterBy="#{gr.entropy_3}" filterMatchMode="contains">
+                            
+                            <p:outputLabel value="#{gr.entropy_3}"/>
+                        </p:column>
+                        
+                        <p:column headerText="MinReps" filterBy="#{gr.min_quantity}" filterMatchMode="contains">
+                            
+                            <p:outputLabel value="#{gr.min_quantity}"/>
+                        </p:column>
+                        
+                        <p:column headerText="MaxReps" filterBy="#{gr.max_quantity}" filterMatchMode="contains">
+                            
+                            <p:outputLabel value="#{gr.max_quantity}"/>
+                        </p:column>
+                        
+                        <p:column headerText="Range" filterBy="#{gr.range}" filterMatchMode="contains">
+                            
+                            <p:outputLabel value="#{gr.range}"/>
+                        </p:column>
+                        
+                        <p:column headerText="Frequency" filterBy="#{gr.alelic_Frequency}" filterMatchMode="contains">
+                            
+                            <p:outputLabel value="#{gr.alelic_Frequency}"/>
+                        </p:column>
+                        
+                        <p:column headerText="Alleles" filterBy="#{gr.alelics_Number}" filterMatchMode="contains">
+                            
+                            <p:outputLabel value="#{gr.alelics_Number}"/>
+                        </p:column>
+                        
+                        <p:column headerText="PIC" filterBy="#{gr.PIC}" filterMatchMode="contains">
+                            
+                            <p:outputLabel value="#{gr.PIC}"/>
+                        </p:column>
+                        
+                        <p:column headerText="Exceptions" filterBy="#{gr.exceptions}" filterMatchMode="contains">
+                            
+                            <p:outputLabel value="#{gr.exceptions}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </p:tab>
+            <p:tab title="Specific results">
+                <h:form>
+                    
+                    <h:commandLink title="Download">
+                        <p:graphicImage url="./../resources/images/ExcelLogo.png"/>
+                        <p:dataExporter type="xls" target="specificResults" 
+                                        fileName="#{PipelineManagedBean.filename}_specific_result_#{PipelineManagedBean.identityPercent}_#{PipelineManagedBean.coveragePercent}"/>
+                        
+                    </h:commandLink>
+                    
+                    <p:dataTable id="specificResults" value="#{PipelineManagedBean.specificResults}" var="sr" resizableColumns="true" scrollable="true" scrollHeight="400">
+                        
+                        <p:column headerText="QryAccVer" filterBy="#{sr.query_acc_ver}" filterMatchMode="contains">
+                            
+                            <p:outputLabel value="#{sr.query_acc_ver}" style=" font-size:  x-small"/>
+                        </p:column>
+                        
+                        <p:column headerText="SeqAccVer" filterBy="#{sr.subject_acc_ver}" filterMatchMode="contains">
+                            
+                            <p:outputLabel value="#{sr.subject_acc_ver}" style="font-size:  x-small"/>
+                        </p:column>
+                        
+                        <p:column headerText="SeqStart" filterBy="#{sr.start_p}" filterMatchMode="contains">
+                            
+                            <p:outputLabel value="#{sr.start_p}" style="font-size:  x-small"/>
+                        </p:column>
+                        
+                        <p:column headerText="SeqEnd" filterBy="#{sr.end_p}" filterMatchMode="contains">
+                            
+                            <p:outputLabel value="#{sr.end_p}" style="font-size:  x-small"/>
+                        </p:column>
+                        
+                        <p:column headerText="BasePairs" filterBy="#{sr.number_of_Nbases}" filterMatchMode="contains">
+                            
+                            <p:outputLabel value="#{sr.number_of_Nbases}" style="font-size:  x-small"/>
+                        </p:column>
+                        
+                        <p:column headerText="Reps" filterBy="#{sr.number_of_Runits}" filterMatchMode="contains">
+                            
+                            <p:outputLabel value="#{sr.number_of_Runits}" style="font-size:  x-small"/>
+                        </p:column>
+                        
+                        <p:column headerText="Strand" filterBy="#{sr.direction}" filterMatchMode="contains">
+                            
+                            <p:outputLabel value="#{sr.direction}" style="font-size:  x-small"/>
+                        </p:column>
+                        
+                        <p:column headerText="Outlier" filterBy="#{sr.outlier}" filterMatchMode="contains">
+                            
+                            <p:outputLabel value="#{sr.outlier}" style="font-size:  x-small"/>
+                        </p:column>
+                        
+                        <p:column headerText="Exception" filterBy="#{sr.exceptions}" filterMatchMode="contains">
+                            
+                            <p:outputLabel value="#{sr.exceptions}" style="font-size:  x-small"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </p:tab>
+        </p:accordionPanel>
+    </h:body>
+</html>
+
