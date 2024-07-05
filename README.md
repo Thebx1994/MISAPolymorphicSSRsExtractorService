@@ -19,3 +19,9 @@ For an optimal solution this project could use cloud blast but the shortage of r
 PSSRExtractor: Identification of polymorphic SSR.
 
 Martínez-Ortiz M, Rivero-Bandínez A. Metodología para el minado in silico de loci polimórficos en microsatélites. Revista Cubana de Informática Médica [Internet]. 2019 [citado 4 Jul 2024]; 11 (1) Disponible en: https://revinformatica.sld.cu/index.php/rcim/article/view/325
+
+ # Quickstart
+
+ 1. Deploy the MISAPolymorphicSSRsExtractorService.war file.
+ 2. Once in a server create the folder MISAPolymorphicSSRsExtractorService/web/resources/tempfiles.
+ 3. Launch the website.
