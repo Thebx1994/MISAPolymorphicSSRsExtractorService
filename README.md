@@ -9,20 +9,20 @@ Citations:
 
 MISA: This tool allows the identification and localization of perfect microsatellites. This program are executed by command line: the perl script is located at the folder web/resources/Misa/misa.pl
 
-Beier S, Thiel T, Münch T, Scholz U, Mascher M (2017) MISA-web: a web server for microsatellite prediction. Bioinformatics 33 2583–2585. https://dx.doi.org/10.1093/bioinformatics/btx198
+ - Beier S, Thiel T, Münch T, Scholz U, Mascher M (2017) MISA-web: a web server for microsatellite prediction. Bioinformatics 33 2583–2585. https://dx.doi.org/10.1093/bioinformatics/btx198
 
 BLAST: Search in DB of Homologous sequences.
 
-Altschul SF, Gish W, Miller W, Myers EW, Lipman DJ. Basic local alignment search tool. J Mol Biol. 1990 Oct 5;215(3):403-10. doi: 10.1016/S0022-2836(05)80360-2. PMID: 2231712.
+ - Altschul SF, Gish W, Miller W, Myers EW, Lipman DJ. Basic local alignment search tool. J Mol Biol. 1990 Oct 5;215(3):403-10. doi: 10.1016/S0022-2836(05)80360-2. PMID: 2231712.
 
-The queries to blast are HTTP based interface. Searches are submitted to the NCBI servers. This is a public resource, so usage limitations apply. 
+ - The queries to blast are HTTP based interface. Searches are submitted to the NCBI servers. This is a public resource, so usage limitations apply. 
 https://blast.ncbi.nlm.nih.gov/doc/blast-help/developerinfo.html#rest
 
-For an optimal solution this project could use cloud blast but the shortage of resources did not allow it. https://ncbi.github.io/blast-cloud/dev/using-url-api.html 
+ - For an optimal solution this project could use cloud blast but the shortage of resources did not allow it. https://ncbi.github.io/blast-cloud/dev/using-url-api.html 
 
 PSSRExtractor: Identification of polymorphic SSR.
 
-Martínez-Ortiz M, Rivero-Bandínez A. Metodología para el minado in silico de loci polimórficos en microsatélites. Revista Cubana de Informática Médica [Internet]. 2019 [citado 4 Jul 2024]; 11 (1) Disponible en: https://revinformatica.sld.cu/index.php/rcim/article/view/325
+ - Martínez-Ortiz M, Rivero-Bandinez A. Metodología para el minado in silico de loci polimórficos en microsatélites. Revista Cubana de Informática Médica [Internet]. 2019 [citado 4 Jul 2024]; 11 (1) Disponible en: https://revinformatica.sld.cu/index.php/rcim/article/view/325
 
  # Quickstart
 
