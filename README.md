@@ -11,7 +11,11 @@ MISA: This tool allows the identification and localization of perfect microsatel
 
 Beier S, Thiel T, Münch T, Scholz U, Mascher M (2017) MISA-web: a web server for microsatellite prediction. Bioinformatics 33 2583–2585. https://dx.doi.org/10.1093/bioinformatics/btx198
 
-BLAST: Search in DB of Homologous sequences. The queries to blast are HTTP based interface. Searches are submitted to the NCBI servers. This is a public resource, so usage limitations apply. 
+BLAST: Search in DB of Homologous sequences.
+
+Altschul SF, Gish W, Miller W, Myers EW, Lipman DJ. Basic local alignment search tool. J Mol Biol. 1990 Oct 5;215(3):403-10. doi: 10.1016/S0022-2836(05)80360-2. PMID: 2231712.
+
+The queries to blast are HTTP based interface. Searches are submitted to the NCBI servers. This is a public resource, so usage limitations apply. 
 https://blast.ncbi.nlm.nih.gov/doc/blast-help/developerinfo.html#rest
 
 For an optimal solution this project could use cloud blast but the shortage of resources did not allow it. https://ncbi.github.io/blast-cloud/dev/using-url-api.html 
