@@ -22,6 +22,7 @@ Martínez-Ortiz M, Rivero-Bandínez A. Metodología para el minado in silico de 
 
  # Quickstart
 
- 1. Deploy the MISAPolymorphicSSRsExtractorService.war file.
+ 1. Deploy the MISAPolymorphicSSRsExtractorService.war file (the original website was deployed on Glassfish 5.0 with jdk-1.8.0_144).
  2. Once in a server create the folder MISAPolymorphicSSRsExtractorService/web/resources/tempfiles.
- 3. Launch the website.
+ 3. Import the taxadb.sql data base (the original database was imported to MariaDB 10.3.30).
+ 4. Launch the website.
