@@ -106,7 +106,10 @@ public class PipelineManagedBean implements Serializable{
         catch(java.io.FileNotFoundException fnfex) {
             System.err.println("File not found: " + fnfex);
         }
-        catch(java.io.IOException ioex) {}
+        catch(java.io.IOException ioex) {
+            
+            System.err.print(ioex.getMessage());
+        }
     }
     
     public ArrayList<String> search(String term){
@@ -348,28 +351,28 @@ public class PipelineManagedBean implements Serializable{
                 builder.directory(new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath(File.separator+"resources"+File.separator+"Misa")));
                 
                 // Redirect error stream to /dev/null or NUL
-//                builder.redirectError(ProcessBuilder.Redirect.to(new File("/dev/null"))); // On Unix-like systems
+                //builder.redirectError(ProcessBuilder.Redirect.to(new File("/dev/null"))); // On Unix-like systems
                 builder.redirectError(ProcessBuilder.Redirect.to(new File("NUL"))); // On Windows
-
+                
                 Process process = builder.start();
-
+                
                 // Wait for the process to complete
                 int exitCode = process.waitFor();
                 System.out.println("Process exited with code: " + exitCode);
-
+                
                 Map<String, String> sequences=MISAParser.readFastaFile(command[1]);
                 results=MISAParser.processFiles(file.getParent()+File.separator+file.getName()+".misa", sequences);
-
+                
                 toProcess=new ArrayList<>(Arrays.asList(results.split("\n")));
-
+                
                 if(results.isEmpty())
                 {
                     clear();
                     return "error";
                 }
-
+                
                 clear();
-
+                
             } catch (IOException e) {
                 System.err.println("misa.pl problem");
             }
@@ -396,10 +399,10 @@ public class PipelineManagedBean implements Serializable{
                     String req = "";
                     
                     while ("".equals(req = get_RID_RTOE(seq1)))
-                        sleep(3500);
+                        sleep(100);
                     
                     while ((hitTable = getHitTable(req)) == null)
-                        sleep(3500);
+                        sleep(100);
                     
                     specificResults.addAll(Polymorphism.evaluate(seq1, hitTable, identityPercent, coveragePercent));
                     
@@ -489,36 +492,19 @@ public class PipelineManagedBean implements Serializable{
         List<String> qav=new ArrayList<>();
         List<String> stream =new ArrayList<>();
         List<String> headers=new ArrayList<>();
-        boolean hit_rend= false;
         boolean rend_excp= false;
-        String html_chk="";
-        boolean html_lg=true;
         BufferedReader rd=null;
         
         try {
-            sleep(100);
-            while(html_lg){
-                URL url2 = new URL(url);
-                URLConnection conn = url2.openConnection();
-                conn.setConnectTimeout(10000);
-                conn.setDoOutput(true);
-                rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                
-                html_chk = rd.readLine();
-                
-                //System.out.println(html_chk);
-                
-                if (!html_chk.contains("# blastn")){
-                    html_lg=true;
-                    sleep(3500);
-                }
-                else  html_lg = false;
-            }
+            URL url2 = new URL(url);
+            URLConnection conn = url2.openConnection();
+            conn.setConnectTimeout(10000);
+            conn.setDoOutput(true);
+            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             
-        }catch(IOException | InterruptedException e){
+        }catch(IOException e){
             
             System.err.println(e.getMessage());
-            rend_excp = true;
         }
         
         if (rend_excp) {units = null; return units;}
@@ -529,83 +515,44 @@ public class PipelineManagedBean implements Serializable{
             stream.add(s);
         }
         
-        hit_rend = true;
-        if (hit_rend){
-            
-            String checkHitTable = stream.toString();
-            
-            if(!checkHitTable.contains("subject acc.ver") ||
-                    !checkHitTable.contains("% identity") ||
-                    !checkHitTable.contains("q. start") ||
-                    !checkHitTable.contains("q. end") ||
-                    !checkHitTable.contains("s. start") ||
-                    !checkHitTable.contains("s. end") ||
-                    !checkHitTable.contains("evalue")){
-                return null;
-            }
-            
-            for(String s1:stream){
-                if(s1.contains("#"))
+        rd.close();
+        
+        String checkHitTable = stream.toString();
+        
+        if(!checkHitTable.contains("subject acc.ver") ||
+                !checkHitTable.contains("% identity") ||
+                !checkHitTable.contains("q. start") ||
+                !checkHitTable.contains("q. end") ||
+                !checkHitTable.contains("s. start") ||
+                !checkHitTable.contains("s. end") ||
+                !checkHitTable.contains("evalue")){
+            return null;
+        }
+        
+        for(String s1:stream){
+            if(s1.contains("#"))
+            {
+                if(s1.startsWith("# Query:") && !check.contains(s1))
+                    check.add(s1);
+                if( s1.equals("# blastn") && headers.size()==5)
                 {
-                    if(s1.startsWith("# Query:") && !check.contains(s1))
-                        check.add(s1);
-                    if( s1.equals("# blastn") && headers.size()==5)
-                    {
-                        lecture.add(headers.get(2));
-                        headers.clear();
-                        headers.add(s1);
-                    }
-                    else
-                        headers.add(s1);
-                }
-                else if(!s1.equals("") && !s1.contains("#"))
-                {
-                    lecture.add(s1);
+                    lecture.add(headers.get(2));
                     headers.clear();
+                    headers.add(s1);
                 }
+                else
+                    headers.add(s1);
             }
-            for(String value:lecture)
+            else if(!s1.equals("") && !s1.contains("#"))
             {
-                if(value.startsWith("# Query:"))
-                    units.add(new HtBLASTParser_Unit(value.substring(9),
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null));
-                else{
-                    
-                    String[] lectemp=value.split("\t");
-                    
-                    units.add(new HtBLASTParser_Unit(lectemp[0],
-                            lectemp[1],
-                            Float.parseFloat(lectemp[2]),
-                            Integer.parseInt(lectemp[3]),
-                            Integer.parseInt(lectemp[4]),
-                            Integer.parseInt(lectemp[5]),
-                            Integer.parseInt(lectemp[6]),
-                            Integer.parseInt(lectemp[7]),
-                            Integer.parseInt(lectemp[8]),
-                            Integer.parseInt(lectemp[9]),
-                            Float.parseFloat(lectemp[10]),
-                            Float.parseFloat(lectemp[11])));
-                }
+                lecture.add(s1);
+                headers.clear();
             }
-            
-            for (HtBLASTParser_Unit u: units)
-            {
-                if(!qav.contains(u.getQuery_acc_ver()))
-                    qav.add(u.getQuery_acc_ver());
-            }
-            
-            if(qav.size()<check.size())
-                units.add(new HtBLASTParser_Unit(check.get(check.size()-1).substring(9),
+        }
+        for(String value:lecture)
+        {
+            if(value.startsWith("# Query:"))
+                units.add(new HtBLASTParser_Unit(value.substring(9),
                         null,
                         null,
                         null,
@@ -617,8 +564,44 @@ public class PipelineManagedBean implements Serializable{
                         null,
                         null,
                         null));
+            else{
+                
+                String[] lectemp=value.split("\t");
+                
+                units.add(new HtBLASTParser_Unit(lectemp[0],
+                        lectemp[1],
+                        Float.parseFloat(lectemp[2]),
+                        Integer.parseInt(lectemp[3]),
+                        Integer.parseInt(lectemp[4]),
+                        Integer.parseInt(lectemp[5]),
+                        Integer.parseInt(lectemp[6]),
+                        Integer.parseInt(lectemp[7]),
+                        Integer.parseInt(lectemp[8]),
+                        Integer.parseInt(lectemp[9]),
+                        Float.parseFloat(lectemp[10]),
+                        Float.parseFloat(lectemp[11])));
+            }
         }
-        else units = null;
+        
+        for (HtBLASTParser_Unit u: units)
+        {
+            if(!qav.contains(u.getQuery_acc_ver()))
+                qav.add(u.getQuery_acc_ver());
+        }
+        
+        if(qav.size()<check.size())
+            units.add(new HtBLASTParser_Unit(check.get(check.size()-1).substring(9),
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null));
         
         return units;
     }
