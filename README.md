@@ -1,6 +1,6 @@
 # MISAPolymorphicSSRsExtractorService
 
- This is a software pipeline, which allow the fast and reliable identification of polymorphic SSRs loci. The global processing is done by the concatenation of the programs MISA, BLAST and the PSSR-Extractor
+ This is a software pipeline, which allow the identification of polymorphic SSRs loci. The global processing is done by the concatenation of the programs MISA, BLAST and the PSSR-Extractor
 script. The inputs are directory paths where multiple sequence files are found in FASTA format and the outputs are the SSRs, access codes to the databases, positions in the genome, number of repetitions and the degree of polymorphism expressed as range of variation, allelic
 frequency, allele number and polymorphic information content (PIC). An optional script, SSRMerge, allows the identification of unique (non-redundant) loci in the set of processed
 genome sequences with taxonomically closed relationship which permit the elaboration of the database taxadb that contains the clasification of several bacterias.
